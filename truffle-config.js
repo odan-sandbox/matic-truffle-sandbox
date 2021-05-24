@@ -29,6 +29,8 @@
  */
 const Web3 = require("web3");
 
+const HDWalletProvider = require("@truffle/hdwallet-provider");
+
 function getPrivateChainConfig() {
   return {
     provider: () => {
@@ -43,6 +45,21 @@ function getPrivateChainConfig() {
     },
     network_id: "*",
     production: true,
+  };
+}
+
+function getMaticConfig() {
+  return {
+    provider: () => {
+      return new HDWalletProvider({
+        privateKeys: [process.env.PRIVATE_KEY],
+        providerOrUrl: "https://rpc-mumbai.matic.today",
+      });
+    },
+    network_id: 80001,
+    confirmations: 2,
+    timeoutBlocks: 200,
+    skipDryRun: true,
   };
 }
 
@@ -97,8 +114,8 @@ module.exports = {
     // production: true    // Treats this network as if it was a public net. (default: false)
     // }
     private: getPrivateChainConfig(),
+    matic: getMaticConfig(),
   },
-
   // Set default mocha options here, use special reporters etc.
   mocha: {
     // timeout: 100000
