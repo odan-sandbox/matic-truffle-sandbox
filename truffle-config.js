@@ -49,25 +49,38 @@ function getPrivateChainConfig() {
   };
 }
 
-function getMaticConfig() {
+function getMaticMumbaiConfig() {
   return {
     provider: () => {
       const region = "us-east-1";
       const keyId = "e9005048-475f-4767-9f2d-0d1fb0c89caf";
-      const provider = new KmsProvider("https://rpc-mumbai.matic.today", {
+      const provider = new KmsProvider("https://rpc-mumbai.maticvigil.com", {
         region,
         keyIds: [keyId],
       });
 
       return provider;
-      /*
-      return new HDWalletProvider({
-        privateKeys: [process.env.PRIVATE_KEY],
-        providerOrUrl: "https://rpc-mumbai.matic.today",
-      });
-      */
     },
     network_id: 80001,
+    confirmations: 2,
+    timeoutBlocks: 200,
+    skipDryRun: true,
+  };
+}
+
+function getMaticConfig() {
+  return {
+    provider: () => {
+      const region = "us-east-1";
+      const keyId = "e9005048-475f-4767-9f2d-0d1fb0c89caf";
+      const provider = new KmsProvider("https://rpc-mainnet.maticvigil.com", {
+        region,
+        keyIds: [keyId],
+      });
+
+      return provider;
+    },
+    network_id: 137,
     confirmations: 2,
     timeoutBlocks: 200,
     skipDryRun: true,
@@ -125,6 +138,7 @@ module.exports = {
     // production: true    // Treats this network as if it was a public net. (default: false)
     // }
     private: getPrivateChainConfig(),
+    maticMumbai: getMaticMumbaiConfig(),
     matic: getMaticConfig(),
   },
   // Set default mocha options here, use special reporters etc.
