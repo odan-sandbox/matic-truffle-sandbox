@@ -30,6 +30,7 @@
 const Web3 = require("web3");
 
 const HDWalletProvider = require("@truffle/hdwallet-provider");
+const { KmsProvider } = require("aws-kms-provider");
 
 function getPrivateChainConfig() {
   return {
@@ -51,10 +52,20 @@ function getPrivateChainConfig() {
 function getMaticConfig() {
   return {
     provider: () => {
+      const region = "us-east-1";
+      const keyId = "e9005048-475f-4767-9f2d-0d1fb0c89caf";
+      const provider = new KmsProvider("https://rpc-mumbai.matic.today", {
+        region,
+        keyIds: [keyId],
+      });
+
+      return provider;
+      /*
       return new HDWalletProvider({
         privateKeys: [process.env.PRIVATE_KEY],
         providerOrUrl: "https://rpc-mumbai.matic.today",
       });
+      */
     },
     network_id: 80001,
     confirmations: 2,
